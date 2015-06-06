@@ -187,7 +187,7 @@ gulp.task("build_html", buildHtml);
 
 gulp.task("build_theme", function (name) {
     if (name === true) {
-        gutil.log("Try " + chalk.blue("gulp build --name theme_name"));
+        gutil.log("Try " + chalk.blue("gulp build_theme --name theme_name"));
         return;
     }
 
@@ -201,12 +201,12 @@ gulp.task("build", function () {
     gutil.log("Using " + chalk.magenta(themesJson));
     var themesList = readJsonFile(themesJson) || [];
 
-    if(!themesList.length) {
+    if (!themesList.length) {
         gutil.log(chalk.red("Themes not found"));
         return;
     }
 
-    _.each(themesList, function(name) {
+    _.each(themesList, function (name) {
         buildCss(name);
         buildFonts(name);
         buildJs(name);
@@ -216,6 +216,17 @@ gulp.task("build", function () {
 
 // watcher
 gulp.task("watch", function () {
-    // CSS
-    gulp.watch(srcLess + "**/*.less", ["build_css"]);
+    gutil.log("Using " + chalk.magenta(themesJson));
+    var themesList = readJsonFile(themesJson) || [];
+
+    if (!themesList.length) {
+        gutil.log(chalk.red("Themes not found"));
+        return;
+    }
+
+    _.each(themesList, function (name) {
+        gulp.watch(src + name + "/**/*.less", function () {
+            buildCss(name)
+        });
+    });
 });
