@@ -175,14 +175,8 @@ gulp.task("add", function (name) {
 // build
 gulp.task("build_css", buildCss);
 gulp.task("build_fonts", buildFonts);
-
-gulp.task("build_js", function (name) {
-    buildJs(name)
-});
-
-gulp.task("build_html", function (name) {
-    buildHtml(name)
-});
+gulp.task("build_js", buildJs);
+gulp.task("build_html", buildHtml);
 
 gulp.task("build", function () {
     buildCss();
