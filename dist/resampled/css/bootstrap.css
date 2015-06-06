@@ -6577,3 +6577,15 @@ button.close {
     display: none !important;
   }
 }
+.bs-component .modal {
+  position: relative;
+  top: auto;
+  right: auto;
+  left: auto;
+  bottom: auto;
+  z-index: 1;
+  display: block;
+}
+.bs-component .modal .modal-dialog {
+  width: 100%;
+}

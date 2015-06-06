@@ -33,115 +33,99 @@
                             <h1 id="navbar">Navbar</h1>
                         </div>
 
-                        <div class="bs-example">
-                            <div class="navbar navbar-default">
-                                <div class="container">
+                        <div class="bs-component">
+                            <nav class="navbar navbar-default">
+                                <div class="container-fluid">
                                     <div class="navbar-header">
-                                        <button type="button" class="navbar-toggle" data-toggle="collapse"
-                                                data-target=".navbar-responsive-collapse">
+                                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                                data-target="#bs-example-navbar-collapse-1">
+                                            <span class="sr-only">Toggle navigation</span>
                                             <span class="icon-bar"></span>
                                             <span class="icon-bar"></span>
                                             <span class="icon-bar"></span>
                                         </button>
                                         <a class="navbar-brand" href="#">Brand</a>
                                     </div>
-                                    <div class="navbar-collapse collapse navbar-responsive-collapse">
+
+                                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                         <ul class="nav navbar-nav">
-                                            <li class="active"><a href="#">Active</a></li>
+                                            <li class="active"><a href="#">Link <span
+                                                    class="sr-only">(current)</span></a></li>
                                             <li><a href="#">Link</a></li>
                                             <li class="dropdown">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b
-                                                        class="caret"></b></a>
-                                                <ul class="dropdown-menu">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                                   aria-expanded="false">Dropdown <span class="caret"></span></a>
+                                                <ul class="dropdown-menu" role="menu">
                                                     <li><a href="#">Action</a></li>
                                                     <li><a href="#">Another action</a></li>
                                                     <li><a href="#">Something else here</a></li>
                                                     <li class="divider"></li>
-                                                    <li class="dropdown-header">Dropdown header</li>
                                                     <li><a href="#">Separated link</a></li>
+                                                    <li class="divider"></li>
                                                     <li><a href="#">One more separated link</a></li>
                                                 </ul>
                                             </li>
                                         </ul>
-                                        <form class="navbar-form navbar-left">
-                                            <input type="text" class="form-control col-lg-8" placeholder="Search">
+                                        <form class="navbar-form navbar-left" role="search">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="Search">
+                                            </div>
+                                            <button type="submit" class="btn btn-default">Submit</button>
                                         </form>
                                         <ul class="nav navbar-nav navbar-right">
                                             <li><a href="#">Link</a></li>
-                                            <li class="dropdown">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b
-                                                        class="caret"></b></a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#">Action</a></li>
-                                                    <li><a href="#">Another action</a></li>
-                                                    <li><a href="#">Something else here</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#">Separated link</a></li>
-                                                </ul>
-                                            </li>
                                         </ul>
                                     </div>
-                                    <!-- /.nav-collapse -->
                                 </div>
-                                <!-- /.container -->
-                            </div>
-                            <!-- /.navbar -->
-
-
-                            <div class="navbar navbar-inverse">
-                                <div class="container">
-                                    <div class="navbar-header">
-                                        <button type="button" class="navbar-toggle" data-toggle="collapse"
-                                                data-target=".navbar-inverse-collapse">
-                                            <span class="icon-bar"></span>
-                                            <span class="icon-bar"></span>
-                                            <span class="icon-bar"></span>
-                                        </button>
-                                        <a class="navbar-brand" href="#">Brand</a>
-                                    </div>
-                                    <div class="navbar-collapse collapse navbar-inverse-collapse">
-                                        <ul class="nav navbar-nav">
-                                            <li class="active"><a href="#">Active</a></li>
-                                            <li><a href="#">Link</a></li>
-                                            <li class="dropdown">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b
-                                                        class="caret"></b></a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#">Action</a></li>
-                                                    <li><a href="#">Another action</a></li>
-                                                    <li><a href="#">Something else here</a></li>
-                                                    <li class="divider"></li>
-                                                    <li class="dropdown-header">Dropdown header</li>
-                                                    <li><a href="#">Separated link</a></li>
-                                                    <li><a href="#">One more separated link</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                        <form class="navbar-form navbar-left">
-                                            <input type="text" class="form-control col-lg-8" placeholder="Search">
-                                        </form>
-                                        <ul class="nav navbar-nav navbar-right">
-                                            <li><a href="#">Link</a></li>
-                                            <li class="dropdown">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b
-                                                        class="caret"></b></a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#">Action</a></li>
-                                                    <li><a href="#">Another action</a></li>
-                                                    <li><a href="#">Something else here</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#">Separated link</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <!-- /.nav-collapse -->
-                                </div>
-                                <!-- /.container -->
-                            </div>
-                            <!-- /.navbar -->
+                            </nav>
                         </div>
-                        <!-- /example -->
+
+                        <div class="bs-component">
+                            <nav class="navbar navbar-inverse">
+                                <div class="container-fluid">
+                                    <div class="navbar-header">
+                                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                                data-target="#bs-example-navbar-collapse-2">
+                                            <span class="sr-only">Toggle navigation</span>
+                                            <span class="icon-bar"></span>
+                                            <span class="icon-bar"></span>
+                                            <span class="icon-bar"></span>
+                                        </button>
+                                        <a class="navbar-brand" href="#">Brand</a>
+                                    </div>
+
+                                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                                        <ul class="nav navbar-nav">
+                                            <li class="active"><a href="#">Link <span
+                                                    class="sr-only">(current)</span></a></li>
+                                            <li><a href="#">Link</a></li>
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                                   aria-expanded="false">Dropdown <span class="caret"></span></a>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li><a href="#">Action</a></li>
+                                                    <li><a href="#">Another action</a></li>
+                                                    <li><a href="#">Something else here</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="#">Separated link</a></li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="#">One more separated link</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <form class="navbar-form navbar-left" role="search">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="Search">
+                                            </div>
+                                            <button type="submit" class="btn btn-default">Submit</button>
+                                        </form>
+                                        <ul class="nav navbar-nav navbar-right">
+                                            <li><a href="#">Link</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
 
                     </div>
                 </div>
@@ -991,7 +975,6 @@
             <!-- Containers
             ================================================== -->
             <div class="bs-docs-section">
-
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="page-header">
@@ -1164,7 +1147,87 @@
                 </div>
             </div>
 
+            <div class="bs-docs-section">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="page-header">
+                            <h1 id="dialogs">Dialogs</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h2>Modals</h2>
 
+                        <div class="bs-component">
+                            <div class="modal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                ×
+                                            </button>
+                                            <h4 class="modal-title">Modal title</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>One fine body…</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                            </button>
+                                            <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <h2>Popovers</h2>
+
+                        <div class="bs-component">
+                            <button type="button" class="btn btn-default" data-container="body" data-toggle="popover"
+                                    data-placement="left"
+                                    data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">Left
+                            </button>
+
+                            <button type="button" class="btn btn-default" data-container="body" data-toggle="popover"
+                                    data-placement="top"
+                                    data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">Top
+                            </button>
+
+                            <button type="button" class="btn btn-default" data-container="body" data-toggle="popover"
+                                    data-placement="bottom" data-content="Vivamus
+              sagittis lacus vel augue laoreet rutrum faucibus.">Bottom
+                            </button>
+
+                            <button type="button" class="btn btn-default" data-container="body" data-toggle="popover"
+                                    data-placement="right"
+                                    data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">Right
+                            </button>
+                        </div>
+                        <h2>Tooltips</h2>
+
+                        <div class="bs-component">
+                            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="left"
+                                    title="" data-original-title="Tooltip on left">Left
+                            </button>
+
+                            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top"
+                                    title="" data-original-title="Tooltip on top">Top
+                            </button>
+
+                            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom"
+                                    title="" data-original-title="Tooltip on bottom">Bottom
+                            </button>
+
+                            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right"
+                                    title="" data-original-title="Tooltip on right">Right
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Bootstrap core JavaScript
@@ -1172,5 +1235,12 @@
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+
+        <script>
+            $(function () {
+                $('.bs-component [data-toggle="popover"]').popover();
+                $('.bs-component [data-toggle="tooltip"]').tooltip();
+            });
+        </script>
     </body>
 </html>

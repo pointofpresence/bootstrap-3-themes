@@ -1,4 +1,79 @@
 @import "../../../node_modules/bootstrap/less/bootstrap.less";
 @import "variables.less";
 
-// custom theme here
+.bs-component {
+    .modal {
+        position: relative;
+        top: auto;
+        right: auto;
+        left: auto;
+        bottom: auto;
+        z-index: 1;
+        display: block;
+
+        .modal-dialog {
+            width: 100%;
+        }
+    }
+}
+
+// Buttons
+.btn {
+    border-width: 2px;
+}
+
+.btn:active {
+    .box-shadow(none);
+}
+
+.btn-group.open .dropdown-toggle {
+    .box-shadow(none);
+}
+
+// Tables
+table,
+.table {
+
+    a:not(.btn) {
+        text-decoration: none;
+    }
+
+    .dropdown-menu a {
+        text-decoration: none;
+    }
+
+    .success,
+    .warning,
+    .danger,
+    .info {
+        color: @inverse;
+
+        > th > a,
+        > td > a,
+        > a {
+            color: @inverse;
+        }
+    }
+
+    > thead > tr > th,
+    > tbody > tr > th,
+    > tfoot > tr > th,
+    > thead > tr > td,
+    > tbody > tr > td,
+    > tfoot > tr > td {
+        border: none;
+    }
+
+    &-bordered > thead > tr > th,
+    &-bordered > tbody > tr > th,
+    &-bordered > tfoot > tr > th,
+    &-bordered > thead > tr > td,
+    &-bordered > tbody > tr > td,
+    &-bordered > tfoot > tr > td {
+        border: 1px solid @table-border-color;
+    }
+}
+
+.well {
+    .box-shadow(none);
+}
