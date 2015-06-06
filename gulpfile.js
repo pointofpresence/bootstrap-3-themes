@@ -11,12 +11,10 @@ var header       = require("gulp-header"),          // banner maker
     chalk        = require('chalk'),                // colors
     _            = require("underscore");           // underscore
 
-var themesJson = "./themes.json";
-
-var misc            = "./misc/",
+var themesJson      = "./themes.json",
+    misc            = "./misc/",
     src             = "./src/",
     dist            = "./dist/",
-    distCss         = dist + "/css/",
     bootstrap       = "./node_modules/bootstrap/",
     bootstrapLess   = bootstrap + "less/",
     bootstrapDist   = bootstrap + "dist/",
@@ -92,12 +90,21 @@ function buildFonts(name) {
         .pipe(gulp.dest(dir));
 }
 
-function buildCss() {
-    mkdirp(srcLess);
-    mkdirp(distCss);
+function buildCss(name) {
+    if (name === true) {
+        gutil.log("Try " + chalk.blue("gulp build_css --name theme_name"));
+        return;
+    }
 
+    var srcDir = src + name + "/less/",
+        distDir = dist + name + "/css/";
+
+    gutil.log("Creating " + chalk.magenta(distDir) + "...");
+    mkdirp(distDir);
+
+    gutil.log("Writing CSS files to " + chalk.magenta(distDir) + "...");
     gulp
-        .src(srcLess + themeLess)
+        .src(srcDir + themeLess)
         .pipe(less())
         .pipe(autoprefixer({
             browsers: [
@@ -112,9 +119,9 @@ function buildCss() {
             ]
         }))
         .pipe(header(banner, {pkg: pkg}))
-        .pipe(out(distCss + bootstrapCss))
+        .pipe(out(distDir + bootstrapCss))
         .pipe(csso())
-        .pipe(out(distCss + bootstrapCssMin));
+        .pipe(out(distDir + bootstrapCssMin));
 }
 
 function readJsonFile(file, options) {
@@ -178,11 +185,16 @@ gulp.task("build_fonts", buildFonts);
 gulp.task("build_js", buildJs);
 gulp.task("build_html", buildHtml);
 
-gulp.task("build", function () {
-    buildCss();
-    buildFonts();
-    buildJs();
-    buildHtml();
+gulp.task("build_theme", function (name) {
+    if (name === true) {
+        gutil.log("Try " + chalk.blue("gulp build --name theme_name"));
+        return;
+    }
+
+    buildCss(name);
+    buildFonts(name);
+    buildJs(name);
+    buildHtml(name);
 });
 
 // watcher
