@@ -197,6 +197,23 @@ gulp.task("build_theme", function (name) {
     buildHtml(name);
 });
 
+gulp.task("build", function () {
+    gutil.log("Using " + chalk.magenta(themesJson));
+    var themesList = readJsonFile(themesJson) || [];
+
+    if(!themesList.length) {
+        gutil.log(chalk.red("Themes not found"));
+        return;
+    }
+
+    _.each(themesList, function(name) {
+        buildCss(name);
+        buildFonts(name);
+        buildJs(name);
+        buildHtml(name);
+    });
+});
+
 // watcher
 gulp.task("watch", function () {
     // CSS
