@@ -40,10 +40,16 @@ var banner = [
     ''
 ].join('\n');
 
-function buildHtml() {
+function buildHtml(name) {
+    var dir = dist + name + "/";
+
+    gutil.log("Creating HTML in " + chalk.magenta(dir) + "...");
+
+    mkdirp(dir);
+
     gulp
         .src(misc + "index.html")
-        .pipe(gulp.dest(dist));
+        .pipe(gulp.dest(dir));
 }
 
 function buildJs(name) {
@@ -157,7 +163,9 @@ gulp.task("build_js", function (name) {
     buildJs(name)
 });
 
-gulp.task("build_html", buildHtml);
+gulp.task("build_html", function (name) {
+    buildHtml(name)
+});
 
 gulp.task("build", function () {
     buildCss();
