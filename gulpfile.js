@@ -114,7 +114,7 @@ function compress(theme) {
     gutil.log("Compressing " + chalk.magenta(dir) + "...");
     mkdirp(dist);
 
-    return gulp.src(dir + '**/*', {base: dist})
+    return gulp.src(dir + '**/*')
         .pipe(zip(name + '.zip'))
         .pipe(gulp.dest(dist));
 }
