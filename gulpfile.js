@@ -46,8 +46,10 @@ function buildHtml() {
         .pipe(gulp.dest(dist));
 }
 
-function buildJs() {
-    var dir = dist + "js/";
+function buildJs(name) {
+    var dir = dist + name + "/js/";
+
+    gutil.log("Creating " + chalk.magenta(dir) + " and files...");
     mkdirp(dir);
 
     gulp
@@ -92,22 +94,6 @@ function buildCss() {
         .pipe(out(distCss + bootstrapCssMin));
 }
 
-function installCustomTheme() {
-    mkdirp(srcLess);
-
-    gulp
-        .src(misc + themeLess)
-        .pipe(gulp.dest(srcLess));
-}
-
-function installCustomVariables() {
-    mkdirp(srcLess);
-
-    gulp
-        .src(bootstrapLess + "variables.less")
-        .pipe(gulp.dest(srcLess));
-}
-
 function readJsonFile(file, options) {
     try {
         return JSON.parse(fs.readFileSync(file, options))
@@ -118,13 +104,11 @@ function readJsonFile(file, options) {
 
 function writeFileSync(file, obj, options) {
     var spaces = null, str = JSON.stringify(obj, null, spaces) + '\n';
+    //noinspection JSUnresolvedFunction
     return fs.writeFileSync(file, str, options);
 }
 
-// setup
-gulp.task("install_custom_variables", installCustomVariables);
-gulp.task("install_custom_theme", installCustomTheme);
-
+// new theme
 gulp.task("add", function (name) {
     if (name === true) {
         gutil.log("Try " + chalk.blue("gulp add --name theme_name"));
@@ -168,7 +152,11 @@ gulp.task("add", function (name) {
 // build
 gulp.task("build_css", buildCss);
 gulp.task("build_fonts", buildFonts);
-gulp.task("build_js", buildJs);
+
+gulp.task("build_js", function (name) {
+    buildJs(name)
+});
+
 gulp.task("build_html", buildHtml);
 
 gulp.task("build", function () {
