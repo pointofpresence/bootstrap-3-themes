@@ -25,6 +25,8 @@ Gulp tasks (full list)
 
 -   `gulp build_css --name theme_name`
 
+-   `gulp compress --name theme_name`
+
 -   `gulp build_theme --name theme_name`
 
 -   `gulp build`
