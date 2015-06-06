@@ -41,6 +41,11 @@ var banner = [
 ].join('\n');
 
 function buildHtml(name) {
+    if (name === true) {
+        gutil.log("Try " + chalk.blue("gulp build_html --name theme_name"));
+        return;
+    }
+
     var dir = dist + name + "/";
 
     gutil.log("Creating HTML in " + chalk.magenta(dir) + "...");
@@ -53,6 +58,11 @@ function buildHtml(name) {
 }
 
 function buildJs(name) {
+    if (name === true) {
+        gutil.log("Try " + chalk.blue("gulp build_js --name theme_name"));
+        return;
+    }
+
     var dir = dist + name + "/js/";
 
     gutil.log("Creating " + chalk.magenta(dir) + " and files...");
@@ -66,8 +76,15 @@ function buildJs(name) {
         .pipe(gulp.dest(dir));
 }
 
-function buildFonts() {
-    var dir = dist + "fonts/";
+function buildFonts(name) {
+    if (name === true) {
+        gutil.log("Try " + chalk.blue("gulp build_fonts --name theme_name"));
+        return;
+    }
+
+    var dir = dist + name + "/fonts/";
+
+    gutil.log("Creating " + chalk.magenta(dir) + " and files...");
     mkdirp(dir);
 
     gulp
