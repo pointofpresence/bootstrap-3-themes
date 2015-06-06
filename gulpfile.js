@@ -1,6 +1,5 @@
-var gulp = require("gulp-param")(require("gulp"), process.argv);
-
-var header       = require("gulp-header"),          // banner maker
+var gulp         = require("gulp"),
+    header       = require("gulp-header"),          // banner maker
     mkdirp       = require("mkdirp"),               // mkdir
     autoprefixer = require('gulp-autoprefixer'),    // Autoprefixer
     less         = require("gulp-less"),            // LESS
@@ -9,7 +8,9 @@ var header       = require("gulp-header"),          // banner maker
     fs           = require("fs"),                   // fs
     gutil        = require("gulp-util"),            // log and other
     chalk        = require('chalk'),                // colors
-    _            = require("underscore");           // underscore
+    _            = require("underscore"),           // underscore
+    zip          = require("gulp-zip"),             // zip
+    runSequence  = require("run-sequence");         // sync
 
 var themesJson      = "./themes.json",
     misc            = "./misc/",
@@ -38,8 +39,14 @@ var banner = [
     ''
 ].join('\n');
 
-function buildHtml(name) {
-    if (name === true) {
+function getName() {
+    return gutil.env.hasOwnProperty("name") ? gutil.env.name : null;
+}
+
+function buildHtml(theme) {
+    var name = _.isFunction(theme) || !theme ? getName() : theme;
+
+    if (!name || name === true) {
         gutil.log("Try " + chalk.blue("gulp build_html --name theme_name"));
         return;
     }
@@ -50,13 +57,15 @@ function buildHtml(name) {
 
     mkdirp(dir);
 
-    gulp
+    return gulp
         .src(misc + "index.html")
         .pipe(gulp.dest(dir));
 }
 
-function buildJs(name) {
-    if (name === true) {
+function buildJs(theme) {
+    var name = _.isFunction(theme) || !theme ? getName() : theme;
+
+    if (!name || name === true) {
         gutil.log("Try " + chalk.blue("gulp build_js --name theme_name"));
         return;
     }
@@ -66,7 +75,7 @@ function buildJs(name) {
     gutil.log("Creating " + chalk.magenta(dir) + " and files...");
     mkdirp(dir);
 
-    gulp
+    return gulp
         .src([
             bootstrapDist + "js/" + bootstrapJs,
             bootstrapDist + "js/" + bootstrapJsMin
@@ -74,8 +83,10 @@ function buildJs(name) {
         .pipe(gulp.dest(dir));
 }
 
-function buildFonts(name) {
-    if (name === true) {
+function buildFonts(theme) {
+    var name = _.isFunction(theme) || !theme ? getName() : theme;
+
+    if (!name || name === true) {
         gutil.log("Try " + chalk.blue("gulp build_fonts --name theme_name"));
         return;
     }
@@ -85,13 +96,33 @@ function buildFonts(name) {
     gutil.log("Creating " + chalk.magenta(dir) + " and files...");
     mkdirp(dir);
 
-    gulp
+    return gulp
         .src(bootstrapDist + "fonts/*")
         .pipe(gulp.dest(dir));
 }
 
-function buildCss(name) {
-    if (name === true) {
+function compress(theme) {
+    var name = _.isFunction(theme) || !theme ? getName() : theme;
+
+    if (!name || name === true) {
+        gutil.log("Try " + chalk.blue("gulp compress --name theme_name"));
+        return;
+    }
+
+    var dir = dist + name + "/";
+
+    gutil.log("Compressing " + chalk.magenta(dir) + "...");
+    mkdirp(dist);
+
+    return gulp.src(dir + '**/*', {base: dist})
+        .pipe(zip(name + '.zip'))
+        .pipe(gulp.dest(dist));
+}
+
+function buildCss(theme) {
+    var name = _.isFunction(theme) || !theme ? getName() : theme;
+
+    if (!name || name === true) {
         gutil.log("Try " + chalk.blue("gulp build_css --name theme_name"));
         return;
     }
@@ -103,7 +134,8 @@ function buildCss(name) {
     mkdirp(distDir);
 
     gutil.log("Writing CSS files to " + chalk.magenta(distDir) + "...");
-    gulp
+
+    return gulp
         .src(srcDir + themeLess)
         .pipe(less())
         .pipe(autoprefixer({
@@ -124,6 +156,45 @@ function buildCss(name) {
         .pipe(out(distDir + bootstrapCssMin));
 }
 
+function buildTheme(theme) {
+    var name = _.isFunction(theme) || !theme ? getName() : theme;
+
+    if (!name || name === true) {
+        gutil.log("Try " + chalk.blue("gulp build_theme --name theme_name"));
+        return;
+    }
+
+    var tasks = {
+        css:   "tmp_build_css_" + name,
+        fonts: "tmp_build_fonts_" + name,
+        js:    "tmp_build_js_" + name,
+        html:  "tmp_build_html_" + name,
+        zip:   "tmp_build_zip_" + name
+    };
+
+    gulp.task(tasks.css, function () {
+        return buildCss(name)
+    });
+
+    gulp.task(tasks.fonts, function () {
+        return buildFonts(name)
+    });
+
+    gulp.task(tasks.js, function () {
+        return buildJs(name)
+    });
+
+    gulp.task(tasks.html, function () {
+        return buildHtml(name)
+    });
+
+    gulp.task(tasks.zip, function () {
+        return compress(name)
+    });
+
+    return runSequence([tasks.css, tasks.fonts, tasks.js, tasks.html], tasks.zip);
+}
+
 function readJsonFile(file, options) {
     try {
         return JSON.parse(fs.readFileSync(file, options))
@@ -132,15 +203,17 @@ function readJsonFile(file, options) {
     }
 }
 
-function writeFileSync(file, obj, options) {
+function writeJsonFile(file, obj, options) {
     var spaces = null, str = JSON.stringify(obj, null, spaces) + '\n';
     //noinspection JSUnresolvedFunction
     return fs.writeFileSync(file, str, options);
 }
 
 // new theme
-gulp.task("add", function (name) {
-    if (name === true) {
+gulp.task("add", function () {
+    var name = getName();
+
+    if (!name || name === true) {
         gutil.log("Try " + chalk.blue("gulp add --name theme_name"));
         return;
     }
@@ -176,7 +249,7 @@ gulp.task("add", function (name) {
     gutil.log("Saving " + chalk.magenta(themesJson) + "...");
 
     themesList.push(name);
-    writeFileSync(themesJson, themesList);
+    writeJsonFile(themesJson, themesList);
 });
 
 // build
@@ -184,18 +257,8 @@ gulp.task("build_css", buildCss);
 gulp.task("build_fonts", buildFonts);
 gulp.task("build_js", buildJs);
 gulp.task("build_html", buildHtml);
-
-gulp.task("build_theme", function (name) {
-    if (name === true) {
-        gutil.log("Try " + chalk.blue("gulp build_theme --name theme_name"));
-        return;
-    }
-
-    buildCss(name);
-    buildFonts(name);
-    buildJs(name);
-    buildHtml(name);
-});
+gulp.task("compress", compress);
+gulp.task("build_theme", buildTheme);
 
 gulp.task("build", function () {
     gutil.log("Using " + chalk.magenta(themesJson));
@@ -206,12 +269,19 @@ gulp.task("build", function () {
         return;
     }
 
+    var tasks = [];
+
     _.each(themesList, function (name) {
-        buildCss(name);
-        buildFonts(name);
-        buildJs(name);
-        buildHtml(name);
+        var task = "task_build_" + name;
+
+        gulp.task(task, function () {
+            return buildTheme(name)
+        });
+
+        tasks.push(task);
     });
+
+    runSequence.call(this, tasks);
 });
 
 // watcher
