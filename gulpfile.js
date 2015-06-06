@@ -1,20 +1,27 @@
-var gulp         = require("gulp"),                 // Gulp JS
-    header       = require("gulp-header"),          // banner maker
+var gulp = require("gulp-param")(require("gulp"), process.argv);
+
+var header       = require("gulp-header"),          // banner maker
     mkdirp       = require("mkdirp"),               // mkdir
     autoprefixer = require('gulp-autoprefixer'),    // Autoprefixer
     less         = require("gulp-less"),            // LESS
     csso         = require('gulp-csso'),            // CSS min
-    out          = require('gulp-out');             // to file
+    out          = require('gulp-out'),             // to file
+    fs           = require("fs"),                   // fs
+    gutil        = require("gulp-util"),            // log and other
+    chalk        = require('chalk'),                // colors
+    _            = require("underscore");           // underscore
+
+var themesJson = "./themes.json";
 
 var misc            = "./misc/",
     src             = "./src/",
-    srcLess         = src + "less/",
     dist            = "./dist/",
     distCss         = dist + "/css/",
     bootstrap       = "./node_modules/bootstrap/",
     bootstrapLess   = bootstrap + "less/",
     bootstrapDist   = bootstrap + "dist/",
     themeLess       = "theme.less",
+    variablesLess   = "variables.less",
     bootstrapCss    = "bootstrap.css",
     bootstrapCssMin = "bootstrap.min.css",
     bootstrapJs     = "bootstrap.js",
@@ -101,13 +108,61 @@ function installCustomVariables() {
         .pipe(gulp.dest(srcLess));
 }
 
+function readJsonFile(file, options) {
+    try {
+        return JSON.parse(fs.readFileSync(file, options))
+    } catch (err) {
+        return null
+    }
+}
+
+function writeFileSync(file, obj, options) {
+    var spaces = null, str = JSON.stringify(obj, null, spaces) + '\n';
+    return fs.writeFileSync(file, str, options);
+}
+
 // setup
 gulp.task("install_custom_variables", installCustomVariables);
 gulp.task("install_custom_theme", installCustomTheme);
 
-gulp.task("install", function () {
-    installCustomVariables();
-    installCustomTheme();
+gulp.task("add", function (name) {
+    if (name === true) {
+        gutil.log("Try " + chalk.blue("gulp add --name theme_name"));
+        return;
+    }
+
+    var themesList = readJsonFile(themesJson) || [];
+
+    if (_.contains(themesList, name)) {
+        gutil.log(chalk.red("'" + name + "' already exists"));
+        return;
+    }
+
+    gutil.log("Initilizing new '" + chalk.cyan(name) + "' theme...");
+
+    var srcDir = src + name + "/",
+        srcLess = srcDir + "less/";
+
+    gutil.log("Creating " + chalk.magenta(srcLess) + "...");
+
+    mkdirp(srcLess);
+
+    gutil.log("Creating " + chalk.magenta(srcLess + variablesLess) + "...");
+
+    gulp
+        .src(bootstrapLess + variablesLess)
+        .pipe(gulp.dest(srcLess));
+
+    gutil.log("Creating " + chalk.magenta(srcLess + themeLess) + "...");
+
+    gulp
+        .src(misc + themeLess)
+        .pipe(gulp.dest(srcLess));
+
+    gutil.log("Saving " + chalk.magenta(themesJson) + "...");
+
+    themesList.push(name);
+    writeFileSync(themesJson, themesList);
 });
 
 // build
